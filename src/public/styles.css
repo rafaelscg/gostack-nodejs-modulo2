@@ -225,6 +225,12 @@ ul.providers {
   border-radius: 4px;
   color: #fff;
 }
+.provider .done {
+  background: #96e89c;
+}
+.provider .cancel {
+  background: #c15858;
+}
 
 .alert {
   width: 100%;

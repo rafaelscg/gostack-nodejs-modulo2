@@ -1,0 +1,57 @@
+{% extends "_layouts/default.njk" %}
+
+{% block body %}
+  <div class="content">
+    <strong>Olá, {{user.name}}</strong>
+    {% if user.provider !== true%}
+      <p>Inicie o agendamento escolhendo um profissional</p>
+
+      <ul class=="providers">
+        {% for provider in providers %}
+          <li class="provider">
+            <div>
+              <img src="/files/{{provider.avatar}}" />
+              <strong>{{provider.name}}</strong>
+            </div>
+            <a href="/app/appointments/new/{{provider.id}}">+</a>
+          </li>
+        {% endfor %}
+      </ul>
+  {% else %}
+    <p>Clientes na fila de hoje</p>
+
+    <ul class=="providers">
+      {% for appointment in appointments %}
+        {%if appointment.status === 0%}
+        <li class="provider">
+          <div>
+            <div class="avatar">
+              <img src="/files/{{appointment["user.avatar"]}}" />
+            </div>
+            <div class="info">
+              <strong>
+                {{appointment["user.name"]}} <br/>
+                Horário: {{ moment(appointment.date).format('HH:mm')}}
+              </strong>
+            </div>
+          </div>
+          <a href="#" class="done" onClick="setAppointmentStatus({{appointment.id}},1)">
+            <i class="fa fa-check-circle"></i>
+          </a>
+          <a href="#" class="cancel" onClick="setAppointmentStatus({{appointment.id}},2)">
+            <i class="fa fa-minus-circle"></i>
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+    <a href="/app/logout" class="logout">Sair</a>
+  </div>
+
+  <script type="text/javascript">
+    function setAppointmentStatus(appointmentId, status){
+      fetch(`/app/appointments/${appointmentId}/${status}`)
+    }
+  </script>
+{% endblock %}
